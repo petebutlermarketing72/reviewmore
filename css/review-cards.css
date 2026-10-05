@@ -70,6 +70,7 @@
 .product-body { padding: clamp(22px, 3vw, 32px); display: flex; flex-direction: column; flex: 1; }
 .product-name { font-size: clamp(24px, 2.6vw, 30px); }
 .product-desc { margin: 10px 0 24px; color: var(--ink-2); font-size: 17px; }
+.product-desc:has(+ .product-delivery) { margin-bottom: 0; }
 
 /* Quantity tiles */
 /* margin-top: auto pins quantity, price and button to the bottom so both cards line up */
@@ -177,5 +178,5 @@ body.dialog-open { overflow: hidden; }
 }
 
 /* Delivery line under each product description */
-.product-delivery { margin-top: 12px; font-size: 16px; color: var(--ink-2); }
+.product-delivery { margin: 12px 0 24px; font-size: 16px; color: var(--ink-2); }
 .product-delivery strong { color: var(--green-dark); }
