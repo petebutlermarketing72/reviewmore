@@ -41,6 +41,9 @@
 .legal ul { margin: 0 0 16px; padding-left: 1.2em; color: var(--ink-2); font-size: 17px; }
 .legal li { margin-bottom: 8px; }
 .legal a { color: var(--green-dark); font-weight: 600; }
+.legal a.btn { color: var(--white); font-weight: 700; }
+.legal a.btn-outline { color: var(--ink); }
+.legal a.btn-outline:hover { color: var(--white); }
 .legal table { width: 100%; border-collapse: collapse; margin: 8px 0 22px; font-size: 15px; background: var(--white); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
 .legal th, .legal td { text-align: left; vertical-align: top; padding: 12px 14px; border-bottom: 1px solid var(--rule); color: var(--ink-2); }
 .legal th { background: var(--tint); color: var(--ink); font-weight: 700; }
