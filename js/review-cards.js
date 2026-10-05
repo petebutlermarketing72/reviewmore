@@ -15,11 +15,11 @@ var REVIEW_CARDS = {
     standard: {
       name: 'Standard Review Cards',
       cardType: 'Standard',
-      defaultQty: 5,
+      defaultQty: 10,
       options: [
         { qty: 1,  price: 10 },
-        { qty: 5,  price: 40, popular: true },
-        { qty: 10, price: 60 }
+        { qty: 5,  price: 40 },
+        { qty: 10, price: 60, popular: true }
       ]
     },
     branded: {
