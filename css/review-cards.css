@@ -1,0 +1,179 @@
+/* ReviewMore — Order Review Cards page
+   Builds on css/styles.css (tokens, buttons, cards, header, footer). */
+
+/* Intro */
+.cards-intro { padding: 16px 0 0; }
+.cards-intro-panel {
+  margin: 0 16px;
+  background: var(--tint);
+  border-radius: var(--radius-xl);
+  padding: clamp(44px, 6vw, 80px) var(--gutter) clamp(120px, 12vw, 160px);
+}
+.cards-intro h1 { font-size: clamp(38px, 5.4vw, 62px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; }
+.cards-intro .sub { max-width: 640px; margin-left: auto; margin-right: auto; }
+.reassure {
+  list-style: none; margin: 26px 0 0; padding: 0;
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+}
+.reassure li {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--white); border-radius: 999px; padding: 8px 16px;
+  font-size: 15px; font-weight: 600; color: var(--ink-2);
+}
+.reassure li::before {
+  content: ""; width: 18px; height: 18px; border-radius: 50%; flex: none;
+  background: var(--green) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5.5 10.5l3 3 6-7' fill='none' stroke='%23ffffff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 16px no-repeat;
+}
+
+/* Products — pulled up over the intro panel */
+.products-section { margin-top: clamp(-120px, -9vw, -88px); padding-bottom: var(--section); }
+.products { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: stretch; max-width: 1060px; }
+.product { position: relative; overflow: hidden; display: flex; flex-direction: column; }
+.product-premium { box-shadow: 0 0 0 2px var(--green), var(--shadow); }
+.product-badge { position: absolute; top: 18px; left: 18px; z-index: 2; background: var(--green); }
+
+.product-media { position: relative; aspect-ratio: 6 / 5; overflow: hidden; background: var(--tint); }
+.product-media-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 50%; }
+
+/* Branded card mock-up (placeholder until real branded photos exist) */
+.product-media-mock {
+  background: var(--green-soft);
+  display: grid; place-items: center; align-content: center; gap: 14px;
+  padding: 28px;
+}
+.mock-card {
+  width: min(78%, 330px); aspect-ratio: 85.6 / 54;
+  background: var(--ink); color: var(--white);
+  border-radius: 14px; padding: 18px 20px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  box-shadow: 0 24px 40px -22px rgba(16, 40, 36, .6);
+  transform: rotate(-4deg);
+  border-top: 6px solid var(--green);
+}
+.mock-top { display: flex; justify-content: space-between; align-items: center; }
+.mock-logo {
+  border: 1.5px dashed rgba(255, 255, 255, .55); border-radius: 6px;
+  padding: 4px 10px; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+}
+.mock-nfc { width: 22px; height: 22px; fill: none; stroke: var(--white); stroke-width: 2; stroke-linecap: round; transform: rotate(-90deg); }
+.mock-bottom { display: flex; justify-content: space-between; align-items: flex-end; gap: 10px; }
+.mock-title { font-weight: 700; font-size: clamp(13px, 1.5vw, 16px); line-height: 1.2; }
+.mock-sub { font-size: clamp(10px, 1.1vw, 11.5px); color: #b8c3c1; margin-top: 3px; }
+.mock-stars { color: var(--star); font-size: 12px; letter-spacing: 2px; margin-top: 4px; }
+.mock-qr {
+  width: 44px; height: 44px; flex: none; border-radius: 4px;
+  border: 4px solid var(--white);
+  background: repeating-conic-gradient(var(--ink) 0 25%, var(--white) 0 50%) 0 0 / 9px 9px;
+}
+.mock-caption { font-size: 13px; font-weight: 600; color: var(--green-dark); text-transform: uppercase; letter-spacing: .08em; }
+
+.product-body { padding: clamp(22px, 3vw, 32px); display: flex; flex-direction: column; flex: 1; }
+.product-name { font-size: clamp(24px, 2.6vw, 30px); }
+.product-desc { margin: 10px 0 24px; color: var(--ink-2); font-size: 17px; }
+
+/* Quantity tiles */
+/* margin-top: auto pins quantity, price and button to the bottom so both cards line up */
+.qty { border: 0; margin: auto 0 0; padding: 0; min-width: 0; }
+.qty legend { padding: 0; margin-bottom: 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.qty-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.qty-option { position: relative; cursor: pointer; }
+.qty-option input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.qty-box {
+  position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-height: 76px; padding: 16px 6px 12px;
+  border: 2px solid var(--rule); border-radius: var(--radius);
+  background: var(--white); text-align: center;
+  transition: border-color .15s ease, background .15s ease;
+}
+.qty-option:hover .qty-box { border-color: #c4d2cf; }
+.qty-option input:checked + .qty-box { border-color: var(--green); background: var(--green-soft); }
+.qty-option input:focus-visible + .qty-box { outline: 3px solid var(--ink); outline-offset: 2px; }
+.qty-num { font-weight: 700; font-size: 17px; line-height: 1.2; }
+.qty-price { font-size: 15px; color: var(--ink-2); }
+.qty-tag {
+  position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+  white-space: nowrap; background: var(--ink); color: var(--white);
+  font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 999px;
+}
+
+/* Selected price */
+.price-row {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  margin: 22px 0 18px; padding-top: 18px; border-top: 1px solid var(--rule);
+}
+.price-now { font-size: 44px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+.price-meta { font-size: 15px; color: var(--muted); }
+
+/* How ordering works */
+.order-steps-panel h2 { margin-bottom: 36px; }
+.order-steps { list-style: none; margin: 0 auto; padding: 0; max-width: 980px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.order-steps li { background: var(--white); border-radius: var(--radius-lg); padding: 26px 24px; box-shadow: var(--shadow); }
+.order-steps .step-num { position: static; margin-bottom: 14px; box-shadow: none; }
+.order-steps h3 { font-size: 20px; }
+.order-steps p { margin-top: 6px; color: var(--ink-2); font-size: 16px; }
+.order-steps-help { margin-top: 30px; color: var(--ink-2); }
+.order-steps-help a { color: var(--green-dark); font-weight: 600; }
+
+/* Order dialog */
+body.dialog-open { overflow: hidden; }
+.order-dialog {
+  width: min(560px, calc(100% - 32px));
+  max-height: calc(100dvh - 48px);
+  padding: 0; border: 0; border-radius: var(--radius-lg);
+  background: var(--white); color: var(--ink);
+  box-shadow: 0 40px 80px -30px rgba(16, 40, 36, .5);
+  overflow: hidden;
+}
+.order-dialog[open] { display: flex; flex-direction: column; }
+.order-dialog::backdrop { background: rgba(16, 20, 20, .55); }
+.order-sheet { overflow-y: auto; padding: 22px clamp(18px, 4vw, 30px) 26px; -webkit-overflow-scrolling: touch; }
+.order-head { display: flex; justify-content: space-between; align-items: center; }
+.order-head h2 { font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
+.order-close {
+  width: 44px; height: 44px; margin-right: -8px; border: 0; border-radius: 999px; background: transparent; cursor: pointer;
+  display: grid; place-items: center;
+}
+.order-close:hover { background: var(--tint); }
+.order-close svg { width: 22px; height: 22px; fill: none; stroke: var(--ink); stroke-width: 2; stroke-linecap: round; }
+.order-summary {
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  margin-top: 6px; padding: 18px 20px;
+  background: var(--green-soft); border-radius: var(--radius);
+}
+.order-line { font-size: 20px; font-weight: 700; line-height: 1.25; }
+.order-change {
+  margin-top: 4px; padding: 4px 0; border: 0; background: none; cursor: pointer;
+  font: inherit; font-size: 14px; font-weight: 600; color: var(--green-dark); text-decoration: underline; text-underline-offset: 3px;
+}
+.order-price { font-size: 34px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; flex: none; }
+.order-note { margin-top: 14px; font-size: 15px; color: var(--ink-2); }
+.order-note-logo { padding: 12px 14px; background: var(--paper); border-radius: 10px; }
+.order-form { margin-top: 16px; }
+.order-fallback { display: grid; gap: 12px; }
+.order-fallback p { color: var(--ink-2); }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .products { grid-template-columns: 1fr; max-width: 560px; }
+  .order-steps { grid-template-columns: 1fr; max-width: 520px; }
+}
+@media (max-width: 700px) {
+  .cards-intro-panel { margin: 0 10px; }
+  .reassure li { font-size: 14px; padding: 7px 13px; }
+  .product-body .btn-big { font-size: 15px; }
+  .price-now { font-size: 38px; }
+
+  /* Order form becomes a full-height sheet on phones */
+  .order-dialog {
+    width: 100%; max-width: 100%; height: 100dvh; max-height: 100dvh;
+    margin: 0; border-radius: 0;
+  }
+  .order-line { font-size: 18px; }
+  .order-price { font-size: 28px; }
+}
+@media (max-width: 380px) {
+  .qty-options { gap: 8px; }
+  .qty-num { font-size: 15px; }
+  .qty-tag { font-size: 9.5px; padding: 2px 6px; }
+}
