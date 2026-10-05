@@ -23,11 +23,21 @@
     try { localStorage.setItem(KEY, JSON.stringify({ marketing: marketing, ts: Date.now() })); } catch (e) {}
   }
 
+  var META_PIXEL_ID = '1425713639518070';
   var marketingLoaded = false;
   function loadMarketing() {
     if (marketingLoaded) return;
     marketingLoaded = true;
-    // Marketing tags (e.g. Meta Pixel) go here once added. Intentionally empty for now.
+    // Meta Pixel (ReviewMore website dataset). Only runs after the visitor clicks Accept.
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', META_PIXEL_ID);
+    fbq('track', 'PageView');
   }
 
   function apply(choice) {
@@ -71,7 +81,9 @@
       var t = e.target.closest('[data-cc]');
       if (!t) return;
       var marketing = t.getAttribute('data-cc') === 'accept';
+      var wasLoaded = marketingLoaded;
       save(marketing);
+      if (wasLoaded && !marketing) { location.reload(); return; }
       apply({ marketing: marketing });
       hide();
     });
