@@ -140,7 +140,7 @@ mark { background: var(--green-soft); color: var(--green-dark); font-weight: 700
 .hero-actions { display: flex; flex-direction: column; gap: 12px; margin-top: 32px; max-width: 360px; }
 .hero-actions .btn { width: 100%; }
 
-.hero-media { justify-self: center; width: 100%; max-width: 360px; position: relative; }
+.hero-media { justify-self: center; width: 100%; max-width: clamp(260px, calc((100vh - 270px) * 9 / 16), 360px); position: relative; align-self: start; }
 .video-frame {
   aspect-ratio: 9 / 16;
   border-radius: 24px;
@@ -298,7 +298,15 @@ mark { background: var(--green-soft); color: var(--green-dark); font-weight: 700
 }
 @media (max-width: 900px) {
   .hero-grid, .offer-panel, .plan-grid, .final-card { grid-template-columns: 1fr; }
-  .hero-media { max-width: 300px; }
+  /* Stacked layout: video sits straight under the headline so it shows above the fold */
+  .hero-copy { display: contents; }
+  .hero-copy > .eyebrow { order: 1; margin-bottom: 0; }
+  .hero-copy > h1 { order: 2; }
+  .hero-media { order: 3; max-width: 230px; align-self: auto; }
+  .hero-copy > p:not(.eyebrow):not(.micro) { order: 4; margin-top: 0; }
+  .hero-copy > .hero-actions { order: 5; margin-top: 0; }
+  .hero-copy > .micro { order: 6; }
+  .hero-grid { gap: 20px; }
   .media-tag { left: -12px; top: 24px; }
   .founder { grid-template-columns: 1fr; text-align: left; }
   .founder-photo img { width: 180px; height: 180px; }
