@@ -17,9 +17,9 @@ var REVIEW_CARDS = {
       cardType: 'Standard',
       defaultQty: 5,
       options: [
-        { qty: 1,  price: 12 },
-        { qty: 5,  price: 39, popular: true },
-        { qty: 10, price: 69 }
+        { qty: 1,  price: 10 },
+        { qty: 5,  price: 40, popular: true },
+        { qty: 10, price: 60 }
       ]
     },
     branded: {
@@ -28,9 +28,9 @@ var REVIEW_CARDS = {
       defaultQty: 5,
       askForLogo: true,
       options: [
-        { qty: 1,  price: 25 },
-        { qty: 5,  price: 79, popular: true },
-        { qty: 10, price: 129 }
+        { qty: 1,  price: 20 },
+        { qty: 5,  price: 80, popular: true },
+        { qty: 10, price: 150 }
       ]
     }
   },
