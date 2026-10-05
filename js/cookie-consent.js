@@ -40,10 +40,22 @@
     fbq('track', 'PageView');
   }
 
+
+  // Conversion tracking helper. Thank-you pages call rmTrack('Lead', {...}).
+  // The event is sent to Meta only if the visitor has accepted marketing cookies;
+  // if they accept later on the same page, queued events are sent at that point.
+  var queued = [];
+  function flushTracking() {
+    if (!(window.rmConsent && window.rmConsent.marketing) || typeof window.fbq !== 'function') return;
+    while (queued.length) { var q = queued.shift(); window.fbq('track', q[0], q[1] || {}); }
+  }
+  window.rmTrack = function (name, params) { queued.push([name, params]); flushTracking(); };
+  document.addEventListener('rm-consent', flushTracking);
+
   function apply(choice) {
     window.rmConsent = { marketing: !!(choice && choice.marketing) };
-    document.dispatchEvent(new CustomEvent('rm-consent', { detail: window.rmConsent }));
     if (window.rmConsent.marketing) loadMarketing();
+    document.dispatchEvent(new CustomEvent('rm-consent', { detail: window.rmConsent }));
   }
 
   var tab = null;
