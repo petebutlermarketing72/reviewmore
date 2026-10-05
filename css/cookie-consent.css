@@ -46,3 +46,22 @@
 .legal th { background: var(--tint); color: var(--ink); font-weight: 700; }
 .legal .table-scroll { overflow-x: auto; }
 .legal .table-scroll table { min-width: 560px; }
+
+/* Small cookie tab, fixed bottom-left, to reopen the settings */
+.cc-tab {
+  position: fixed; left: 16px; bottom: 16px; z-index: 90;
+  width: 44px; height: 44px; padding: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--white); color: var(--ink);
+  border: 1px solid var(--rule); border-radius: 50%;
+  box-shadow: 0 8px 22px -8px rgba(16, 40, 36, .35);
+  cursor: pointer;
+}
+.cc-tab[hidden] { display: none; }
+.cc-tab svg { width: 24px; height: 24px; fill: currentColor; }
+.cc-tab:hover { background: var(--green-soft); color: var(--green-dark); }
+.cc-tab:focus-visible { outline: 3px solid var(--green); outline-offset: 2px; }
+@media (max-width: 720px) {
+  /* sit above the sticky "Get my free card" bar on mobile */
+  .cc-tab { bottom: calc(86px + env(safe-area-inset-bottom)); width: 40px; height: 40px; }
+}

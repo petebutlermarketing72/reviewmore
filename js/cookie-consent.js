@@ -36,7 +36,21 @@
     if (window.rmConsent.marketing) loadMarketing();
   }
 
-  function hide() { if (banner) banner.hidden = true; }
+  var tab = null;
+  function buildTab() {
+    tab = document.createElement('button');
+    tab.type = 'button';
+    tab.className = 'cc-tab';
+    tab.setAttribute('aria-label', 'Cookie settings');
+    tab.setAttribute('title', 'Cookie settings');
+    tab.hidden = true;
+    tab.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-4-4 4 4 0 0 1-4-4 2 2 0 0 1-2-2zM8.5 9a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm3 6.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm5-2a1 1 0 1 1 0 2 1 1 0 0 1 0-2zM7.5 14.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>';
+    tab.addEventListener('click', function () { show(); });
+    document.body.appendChild(tab);
+  }
+  function showTab(on) { if (!tab) buildTab(); tab.hidden = !on; }
+
+  function hide() { if (banner) banner.hidden = true; showTab(true); }
 
   function build() {
     banner = document.createElement('div');
@@ -67,6 +81,7 @@
   function show() {
     if (!banner) build();
     banner.hidden = false;
+    showTab(false);
     var b = banner.querySelector('[data-cc="reject"]');
     if (b) b.focus({ preventScroll: true });
   }
@@ -74,7 +89,7 @@
   function init() {
     var existing = read();
     apply(existing);
-    if (!existing) show();
+    if (!existing) show(); else showTab(true);
     document.addEventListener('click', function (e) {
       if (e.target.closest('[data-cookie-settings]')) { e.preventDefault(); show(); }
     });
