@@ -5,17 +5,16 @@
  * - options: each quantity you sell and its total price in pounds.
  * - popular: true puts a "Most popular" tag on that option.
  * - defaultQty: which quantity is selected when the page loads.
- * - ORDER_FORM_ID: the GoHighLevel form used for card orders. Leave it
- *   empty and customers get an "email this order" button instead.
- *   A product can use its own form by setting formId on that product.
+ * - cardType: the exact text sent to the "Card Type" field in GoHighLevel.
+ * - ORDER_FORM_ID: the GoHighLevel "ReviewMore – Card Order" form.
  */
 var REVIEW_CARDS = {
-  ORDER_FORM_ID: '',
+  ORDER_FORM_ID: 'QdOFEYaape3khISeWewd',
 
   products: {
     standard: {
       name: 'Standard Review Cards',
-      formId: '',
+      cardType: 'Standard',
       defaultQty: 10,
       options: [
         { qty: 5,  price: 19 },
@@ -25,7 +24,7 @@ var REVIEW_CARDS = {
     },
     branded: {
       name: 'Custom Branded Review Cards',
-      formId: '',
+      cardType: 'Custom Branded',
       defaultQty: 10,
       askForLogo: true,
       options: [
@@ -36,15 +35,12 @@ var REVIEW_CARDS = {
     }
   },
 
-  // Hidden field query keys in the GoHighLevel order form
+  // Query keys of the hidden fields in the GoHighLevel order form
   fieldKeys: {
-    summary: 'order_summary',
     type: 'card_type',
     qty: 'card_quantity',
-    price: 'card_price'
-  },
-
-  contact: { email: 'hello@reviewmore.co.uk', tel: '07863771540', phone: '07863 771540' }
+    value: 'order_value'
+  }
 };
 /* =================================================================== */
 
@@ -62,9 +58,6 @@ var REVIEW_CARDS = {
   function orderLine(id) {
     var opt = selection[id];
     return opt.qty + ' ' + cfg.products[id].name;
-  }
-  function orderSummary(id) {
-    return 'CARD ORDER: ' + orderLine(id) + ' - ' + money(selection[id].price);
   }
 
   /* ---------- Product cards ---------- */
@@ -121,71 +114,56 @@ var REVIEW_CARDS = {
   /* ---------- Order form ---------- */
   var dialog = document.getElementById('order-dialog');
   var formArea = dialog.querySelector('[data-order-form]');
-  var embedLoaded = false;
+  var orderFrame = null;
 
-  function ghlForm(id) {
-    var product = cfg.products[id];
-    var formId = product.formId || cfg.ORDER_FORM_ID;
+  // GoHighLevel fills its hidden fields from these query parameters,
+  // e.g. ?card_type=Custom%20Branded&card_quantity=10&order_value=79
+  function orderUrl(id) {
     var keys = cfg.fieldKeys;
     var opt = selection[id];
-
-    var params = new URLSearchParams();
-    params.set(keys.summary, orderSummary(id));
-    params.set(keys.type, product.name);
-    params.set(keys.qty, String(opt.qty));
-    params.set(keys.price, money(opt.price));
-
-    var iframe = document.createElement('iframe');
-    iframe.src = 'https://api.leadconnectorhq.com/widget/form/' + formId + '?' + params.toString();
-    iframe.id = 'inline-' + formId;
-    iframe.title = 'Review Card order form';
-    iframe.style.cssText = 'width:100%;height:100%;min-height:640px;border:none;border-radius:4px';
-    iframe.setAttribute('data-layout', "{'id':'INLINE'}");
-    iframe.setAttribute('data-trigger-type', 'alwaysShow');
-    iframe.setAttribute('data-activation-type', 'alwaysActivated');
-    iframe.setAttribute('data-deactivation-type', 'neverDeactivate');
-    iframe.setAttribute('data-form-name', 'ReviewMore Card Order');
-    iframe.setAttribute('data-height', '640');
-    iframe.setAttribute('data-layout-iframe-id', 'inline-' + formId);
-    iframe.setAttribute('data-form-id', formId);
-    formArea.appendChild(iframe);
-
-    // GoHighLevel's embed script sizes the form to fit its fields
-    if (!embedLoaded) {
-      var s = document.createElement('script');
-      s.src = 'https://link.msgsndr.com/js/form_embed.js';
-      document.body.appendChild(s);
-      embedLoaded = true;
-    }
+    var query = [
+      [keys.type, cfg.products[id].cardType],
+      [keys.qty, String(opt.qty)],
+      [keys.value, String(opt.price)]
+    ].map(function (pair) {
+      return encodeURIComponent(pair[0]) + '=' + encodeURIComponent(pair[1]);
+    }).join('&');
+    return 'https://api.leadconnectorhq.com/widget/form/' + cfg.ORDER_FORM_ID + '?' + query;
   }
 
-  // Used until a GoHighLevel order form is set up
-  function fallback(id) {
-    var opt = selection[id];
-    var subject = orderSummary(id);
-    var body = [
-      'CARD ORDER',
-      '',
-      'Card type: ' + cfg.products[id].name,
-      'Quantity: ' + opt.qty,
-      'Price: ' + money(opt.price),
-      '',
-      'Business name: ',
-      'Your name: ',
-      'Phone number: ',
-      'Additional notes: ',
-      ''
-    ].join('\n');
-    var mailto = 'mailto:' + cfg.contact.email +
-      '?subject=' + encodeURIComponent(subject) +
-      '&body=' + encodeURIComponent(body);
+  // The form is created once, using GoHighLevel's embed settings, then
+  // GoHighLevel's script (which only sets up forms present when it loads)
+  // takes over. Later orders just load the same form with new details.
+  function showForm(id) {
+    if (orderFrame) {
+      orderFrame.src = orderUrl(id);
+      return;
+    }
+    var formId = cfg.ORDER_FORM_ID;
+    var iframe = document.createElement('iframe');
+    iframe.src = orderUrl(id);
+    iframe.id = 'inline-' + formId;
+    iframe.title = 'ReviewMore – Card Order';
+    iframe.style.cssText = 'width:100%;height:906px;border:none;border-radius:8px';
+    iframe.setAttribute('data-layout', "{'id':'INLINE'}");
+    iframe.setAttribute('data-trigger-type', 'alwaysShow');
+    iframe.setAttribute('data-trigger-value', '');
+    iframe.setAttribute('data-activation-type', 'alwaysActivated');
+    iframe.setAttribute('data-activation-value', '');
+    iframe.setAttribute('data-deactivation-type', 'neverDeactivate');
+    iframe.setAttribute('data-deactivation-value', '');
+    iframe.setAttribute('data-form-name', 'ReviewMore – Card Order');
+    iframe.setAttribute('data-height', '906');
+    iframe.setAttribute('data-layout-iframe-id', 'inline-' + formId);
+    iframe.setAttribute('data-form-id', formId);
+    iframe.setAttribute('data-cookie-consent', 'true');
+    iframe.setAttribute('data-cookie-consent-provider', 'auto');
+    formArea.appendChild(iframe);
+    orderFrame = iframe;
 
-    formArea.innerHTML =
-      '<div class="order-fallback">' +
-        '<p>Send us your order and we\'ll confirm everything with you.</p>' +
-        '<a class="btn btn-big btn-block" href="' + mailto + '">Email this order</a>' +
-        '<a class="btn btn-big btn-block btn-outline" href="tel:' + cfg.contact.tel + '">Call/Text ' + cfg.contact.phone + '</a>' +
-      '</div>';
+    var s = document.createElement('script');
+    s.src = 'https://link.msgsndr.com/js/form_embed.js';
+    document.body.appendChild(s);
   }
 
   function openOrder(id) {
@@ -195,8 +173,7 @@ var REVIEW_CARDS = {
     dialog.querySelector('[data-order-price]').textContent = money(selection[id].price);
     dialog.querySelector('[data-logo-note]').hidden = !product.askForLogo;
 
-    formArea.innerHTML = '';
-    if (product.formId || cfg.ORDER_FORM_ID) ghlForm(id); else fallback(id);
+    showForm(id);
 
     if (typeof dialog.showModal === 'function') dialog.showModal();
     else dialog.setAttribute('open', '');
@@ -210,7 +187,8 @@ var REVIEW_CARDS = {
 
   dialog.addEventListener('close', function () {
     document.body.classList.remove('dialog-open');
-    formArea.innerHTML = '';
+    // Clear the form so the next order never shows old details
+    if (orderFrame) orderFrame.src = 'about:blank';
     // Return focus to the button that opened the form
     var btn = current && document.querySelector('[data-product="' + current + '"] [data-order-button]');
     if (btn) btn.focus();

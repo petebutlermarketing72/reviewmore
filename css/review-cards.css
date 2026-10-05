@@ -149,9 +149,7 @@ body.dialog-open { overflow: hidden; }
 .order-price { font-size: 34px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; flex: none; }
 .order-note { margin-top: 14px; font-size: 15px; color: var(--ink-2); }
 .order-note-logo { padding: 12px 14px; background: var(--paper); border-radius: 10px; }
-.order-form { margin-top: 16px; }
-.order-fallback { display: grid; gap: 12px; }
-.order-fallback p { color: var(--ink-2); }
+.order-form { margin-top: 12px; }
 
 /* Responsive */
 @media (max-width: 900px) {
