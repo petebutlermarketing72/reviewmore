@@ -175,3 +175,7 @@ body.dialog-open { overflow: hidden; }
   .qty-num { font-size: 15px; }
   .qty-tag { font-size: 9.5px; padding: 2px 6px; }
 }
+
+/* Delivery line under each product description */
+.product-delivery { margin-top: 12px; font-size: 16px; color: var(--ink-2); }
+.product-delivery strong { color: var(--green-dark); }
