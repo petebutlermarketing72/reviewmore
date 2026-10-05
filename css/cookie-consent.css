@@ -65,3 +65,6 @@
   /* sit above the sticky "Get my free card" bar on mobile */
   .cc-tab { bottom: calc(86px + env(safe-area-inset-bottom)); width: 40px; height: 40px; }
 }
+
+/* Pages without the sticky mobile button: keep the tab in the corner */
+@media (max-width: 720px) { .cc-tab.cc-tab-low { bottom: calc(16px + env(safe-area-inset-bottom)); } }

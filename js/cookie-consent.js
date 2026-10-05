@@ -54,6 +54,7 @@
     tab.setAttribute('aria-label', 'Cookie settings');
     tab.setAttribute('title', 'Cookie settings');
     tab.hidden = true;
+    if (!document.querySelector('.mobile-cta')) tab.classList.add('cc-tab-low');
     tab.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-4-4 4 4 0 0 1-4-4 2 2 0 0 1-2-2zM8.5 9a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm3 6.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm5-2a1 1 0 1 1 0 2 1 1 0 0 1 0-2zM7.5 14.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>';
     tab.addEventListener('click', function () { show(); });
     document.body.appendChild(tab);

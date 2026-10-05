@@ -15,22 +15,22 @@ var REVIEW_CARDS = {
     standard: {
       name: 'Standard Review Cards',
       cardType: 'Standard',
-      defaultQty: 10,
+      defaultQty: 5,
       options: [
-        { qty: 5,  price: 19 },
-        { qty: 10, price: 29, popular: true },
-        { qty: 20, price: 49 }
+        { qty: 1,  price: 12 },
+        { qty: 5,  price: 39, popular: true },
+        { qty: 10, price: 69 }
       ]
     },
     branded: {
       name: 'Custom Branded Review Cards',
       cardType: 'Custom Branded',
-      defaultQty: 10,
+      defaultQty: 5,
       askForLogo: true,
       options: [
-        { qty: 5,  price: 49 },
-        { qty: 10, price: 79, popular: true },
-        { qty: 20, price: 129 }
+        { qty: 1,  price: 25 },
+        { qty: 5,  price: 79, popular: true },
+        { qty: 10, price: 129 }
       ]
     }
   },
@@ -52,12 +52,15 @@ var REVIEW_CARDS = {
   function money(n) {
     return '£' + (Number.isInteger(n) ? n : n.toFixed(2));
   }
+  function cardsLabel(n) {
+    return n + (n === 1 ? ' card' : ' cards');
+  }
   function perCard(opt) {
     return '£' + (opt.price / opt.qty).toFixed(2) + ' per card';
   }
   function orderLine(id) {
     var opt = selection[id];
-    return opt.qty + ' ' + cfg.products[id].name;
+    return opt.qty + ' × ' + cfg.products[id].name.replace(/ Cards$/, opt.qty === 1 ? ' Card' : ' Cards');
   }
 
   /* ---------- Product cards ---------- */
@@ -73,7 +76,7 @@ var REVIEW_CARDS = {
     function show(opt) {
       selection[id] = opt;
       priceNow.textContent = money(opt.price);
-      priceMeta.textContent = opt.qty + ' cards · ' + perCard(opt);
+      priceMeta.textContent = opt.qty === 1 ? '1 card' : cardsLabel(opt.qty) + ' · ' + perCard(opt);
     }
 
     product.options.forEach(function (opt) {
@@ -91,7 +94,7 @@ var REVIEW_CARDS = {
       box.className = 'qty-box';
       box.innerHTML =
         (opt.popular ? '<span class="qty-tag">Most popular</span>' : '') +
-        '<span class="qty-num">' + opt.qty + ' cards</span>' +
+        '<span class="qty-num">' + cardsLabel(opt.qty) + '</span>' +
         '<span class="qty-price">' + money(opt.price) + '</span>';
 
       label.appendChild(input);
