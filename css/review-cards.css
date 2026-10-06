@@ -35,16 +35,22 @@
 .product-media { position: relative; aspect-ratio: 6 / 5; overflow: hidden; background: var(--tint); }
 .product-media-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 50%; }
 
-/* Branded card mock-up (placeholder until real branded photos exist) */
+/* Card visuals. Both cards are shown at the same real-world scale (a standard card is
+   85.6 x 54 mm, one portrait and one landscape), so the standard card's height equals the
+   branded card's width. Sizes come from the width of the image area, so they stay matched
+   at every screen size. Change --card-long to make both cards bigger or smaller together. */
 .product-media-mock {
+  container-type: inline-size;
+  --card-long: 60cqw;
+  overflow: visible;                 /* lets the white lozenge overlap the bottom edge */
   background: var(--green-soft);
-  display: grid; place-items: center; align-content: center; gap: 14px;
-  padding: 28px;
+  display: grid; place-items: center; align-content: center;
+  padding: 46px 20px 34px;          /* top room keeps the green lozenge clear of the card */
 }
 .mock-card {
-  width: min(78%, 330px); aspect-ratio: 85.6 / 54;
+  width: var(--card-long); aspect-ratio: 85.6 / 54;
   background: var(--ink); color: var(--white);
-  border-radius: 14px; padding: 18px 20px;
+  border-radius: clamp(10px, 3cqw, 14px); padding: clamp(11px, 3.4cqw, 18px) clamp(13px, 4cqw, 20px);
   display: flex; flex-direction: column; justify-content: space-between;
   box-shadow: 0 24px 40px -22px rgba(16, 40, 36, .6);
   transform: rotate(-4deg);
@@ -53,26 +59,36 @@
 .mock-top { display: flex; justify-content: space-between; align-items: center; }
 .mock-logo {
   border: 1.5px dashed rgba(255, 255, 255, .55); border-radius: 6px;
-  padding: 4px 10px; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  padding: 3px 8px; font-size: clamp(9px, 2.5cqw, 12px); font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
 }
-.mock-nfc { width: 22px; height: 22px; fill: none; stroke: var(--white); stroke-width: 2; stroke-linecap: round; transform: rotate(-90deg); }
-.mock-bottom { display: flex; justify-content: space-between; align-items: flex-end; gap: 10px; }
-.mock-title { font-weight: 700; font-size: clamp(13px, 1.5vw, 16px); line-height: 1.2; }
-.mock-sub { font-size: clamp(10px, 1.1vw, 11.5px); color: #b8c3c1; margin-top: 3px; }
-.mock-stars { color: var(--star); font-size: 12px; letter-spacing: 2px; margin-top: 4px; }
+.mock-nfc { width: clamp(16px, 4.6cqw, 22px); height: clamp(16px, 4.6cqw, 22px); fill: none; stroke: var(--white); stroke-width: 2; stroke-linecap: round; transform: rotate(-90deg); }
+.mock-bottom { display: flex; justify-content: space-between; align-items: flex-end; gap: 8px; }
+.mock-title { font-weight: 700; font-size: clamp(11px, 3.1cqw, 16px); line-height: 1.2; }
+.mock-sub { font-size: clamp(8.5px, 2.2cqw, 11.5px); color: #b8c3c1; margin-top: 3px; line-height: 1.25; }
+.mock-stars { color: var(--star); font-size: clamp(9px, 2.5cqw, 12px); letter-spacing: 2px; margin-top: 4px; }
 .mock-qr {
-  width: 44px; height: 44px; flex: none; border-radius: 4px;
-  border: 4px solid var(--white);
+  width: clamp(30px, 9cqw, 44px); height: clamp(30px, 9cqw, 44px); flex: none; border-radius: 4px;
+  border: 3px solid var(--white);
   background: repeating-conic-gradient(var(--ink) 0 25%, var(--white) 0 50%) 0 0 / 9px 9px;
 }
 .standard-card-img {
-  width: clamp(130px, 36%, 176px); height: auto; aspect-ratio: 54 / 85.6;
+  width: calc(var(--card-long) * 54 / 85.6); height: auto; aspect-ratio: 54 / 85.6;
   border-radius: 12px; transform: rotate(3deg);
   filter: drop-shadow(0 22px 22px rgba(16, 40, 36, .35));
 }
-.mock-caption { font-size: 13px; font-weight: 600; color: var(--green-dark); text-transform: uppercase; letter-spacing: .08em; }
 
-.product-body { padding: clamp(22px, 3vw, 32px); display: flex; flex-direction: column; flex: 1; }
+/* White lozenge sitting across the bottom edge of the image, above the title */
+.mock-caption {
+  position: absolute; left: 50%; bottom: 0; z-index: 2;
+  transform: translate(-50%, 50%);
+  white-space: nowrap;
+  background: var(--white); color: var(--green-dark);
+  border-radius: 999px; padding: 8px 18px;
+  font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  box-shadow: 0 8px 22px -8px rgba(16, 40, 36, .35);
+}
+
+.product-body { padding: clamp(36px, 4vw, 44px) clamp(22px, 3vw, 32px) clamp(22px, 3vw, 32px); display: flex; flex-direction: column; flex: 1; }
 .product-name { font-size: clamp(24px, 2.6vw, 30px); }
 .product-desc { margin: 10px 0 24px; color: var(--ink-2); font-size: 17px; }
 .product-desc:has(+ .product-delivery) { margin-bottom: 0; }
@@ -163,6 +179,8 @@ body.dialog-open { overflow: hidden; }
   .order-steps { grid-template-columns: 1fr; max-width: 520px; }
 }
 @media (max-width: 700px) {
+  /* Taller image area on phones so the card and both lozenges have room */
+  .product-media { aspect-ratio: 9 / 8; }
   .cards-intro-panel { margin: 0 10px; }
   .reassure li { font-size: 14px; padding: 7px 13px; }
   .product-body .btn-big { font-size: 15px; }
