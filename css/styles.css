@@ -246,7 +246,7 @@ mark { background: var(--green-soft); color: var(--green-dark); font-weight: 700
 .pill-float { position: absolute; top: -14px; left: clamp(26px, 4vw, 40px); }
 .plan-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--rule); }
 .plan-name { font-weight: 700; font-size: 24px; }
-.plan-price { font-size: 52px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+.plan-price { font-size: clamp(52px, 6vw, 64px); font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
 .plan-price span { font-size: 18px; font-weight: 500; color: var(--muted); letter-spacing: 0; margin-left: 2px; }
 .plan-terms { margin-top: 12px; font-size: 15px; color: var(--muted); }
 .plan-intro { margin: 20px 0 8px; font-weight: 600; }
@@ -363,3 +363,21 @@ mark { background: var(--green-soft); color: var(--green-dark); font-weight: 700
   .btn, .mobile-cta { transition: none; }
   .marquee-track { animation: none; }
 }
+
+/* Homepage CTA hierarchy: primary service buttons, secondary text links */
+#get-started { scroll-margin-top: 96px; }
+.hero-actions { max-width: 440px; }
+.feature-cards a { color: var(--green-dark); font-weight: 600; text-underline-offset: 3px; }
+.plan .micro { text-align: center; }
+.final-alt { font-size: 16px; }
+.final-alt a { color: var(--green-dark); font-weight: 600; text-underline-offset: 3px; }
+.plan-grid > * { min-width: 0; }
+/* Homepage buttons only (the Order Cards page keeps its own button sizing) */
+@media (max-width: 700px) {
+  .hero-actions .btn-big, .plan .btn-big, .final-copy .btn-big { padding: 18px 16px; font-size: 14px; letter-spacing: .03em; text-align: center; }
+}
+@media (max-width: 360px) {
+  .hero-actions .btn-big, .plan .btn-big, .final-copy .btn-big { gap: 6px; padding-left: 12px; padding-right: 12px; }
+  .plan-head { flex-wrap: wrap; }
+}
+.media-tag { white-space: nowrap; }
