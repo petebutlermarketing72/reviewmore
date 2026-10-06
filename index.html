@@ -175,7 +175,7 @@
         <p>No more hoping you'll remember to ask, or chasing people yourself.</p>
         <p>For <strong>£29 per month</strong>, I can help you put a simple review process around your business so asking for reviews doesn't keep becoming another job on your list.</p>
       </div>
-      <div class="plan card" id="get-started">
+      <div class="plan card" id="plan">
         <span class="pill-badge pill-float">Review service</span>
         <div class="plan-head">
           <p class="plan-name">ReviewMore</p>
@@ -198,26 +198,24 @@
     </div>
   </section>
 
-  <!-- 6. Free card offer + form (secondary offer; the Order Cards page links to #free-card) -->
-  <section id="free-card" class="section offer">
+  <!-- 6. Sign-up form: every "Start ReviewMore" / "Get started" button scrolls here -->
+  <section class="section offer">
     <div class="wrap">
       <div class="offer-panel">
         <div class="offer-copy">
-          <span class="pill-badge">Your free card</span>
-          <h2>Try it in your own business. <span class="hl">Free.</span></h2>
-          <p>I'll send you one of our generic Google Review tap cards to try for yourself.</p>
-          <p>Put it on your counter, keep it at reception, take it with you to jobs or hand it to a customer when you've finished.</p>
-          <p><strong>Let them tap it and see how easy it is.</strong></p>
+          <span class="pill-badge">Get started</span>
+          <h2>Start ReviewMore. <span class="hl">£29/month.</span></h2>
+          <p>Fill in your details and I'll be in touch to get you started.</p>
           <ul class="ticks">
-            <li>One free card per UK business</li>
-            <li>Posted within 3 working days</li>
-            <li>No payment details required</li>
-            <li>No subscription required</li>
+            <li>£29 per month</li>
+            <li>No long-term contract. Cancel anytime.</li>
+            <li>No payment taken on this form</li>
           </ul>
+          <p class="final-alt">Just want a Review Card? <a href="review-cards/">Get a free Review Card</a></p>
         </div>
-        <div class="form-card">
-          <h3>Want one?</h3>
-          <p class="form-sub">Tell us where to send it.</p>
+        <div class="form-card" id="get-started">
+          <h3>Get started</h3>
+          <p class="form-sub">Tell us about your business.</p>
           <div class="form-embed">
             <iframe
               src="https://api.leadconnectorhq.com/widget/form/2TmJIOQ981VhvHiEQAja"
@@ -231,9 +229,10 @@
               data-height="600"
               data-layout-iframe-id="inline-2TmJIOQ981VhvHiEQAja"
               data-form-id="2TmJIOQ981VhvHiEQAja"
-              title="Free Google Review Card request form">
+              title="ReviewMore sign-up form">
             </iframe>
           </div>
+          <p class="micro">£29 per month. No long-term contract. Cancel anytime.</p>
         </div>
       </div>
     </div>
@@ -365,13 +364,15 @@
     if (p && p.catch) p.catch(function () {});
   });
 
-  // Where every "Start ReviewMore" button (marked data-signup) goes.
-  // PLACEHOLDER: for now this just scrolls to the £29 plan box. When the sign-up
-  // route exists, put its address here and all the buttons follow.
+  // Where every "Start ReviewMore" / "Get started" button (marked data-signup) goes:
+  // the sign-up form further down this page.
   var SIGNUP_URL = '#get-started';
   document.querySelectorAll('[data-signup]').forEach(function (a) { a.setAttribute('href', SIGNUP_URL); });
 
-  // Hide the sticky phone button while either offer (the £29 plan or the free card form) is on screen
+  // Free cards are now requested on the Order Cards page. Send old #free-card links there.
+  if (location.hash === '#free-card') location.replace('review-cards/#cards');
+
+  // Hide the sticky phone button while the form or the £29 plan box is on screen
   var cta = document.querySelector('.mobile-cta');
   if ('IntersectionObserver' in window && cta) {
     var seen = {};
@@ -379,7 +380,7 @@
       entries.forEach(function (e) { seen[e.target.id] = e.isIntersecting; });
       cta.classList.toggle('is-hidden', Object.keys(seen).some(function (k) { return seen[k]; }));
     }, { threshold: 0.15 });
-    ['get-started', 'free-card'].forEach(function (id) { var el = document.getElementById(id); if (el) io.observe(el); });
+    ['get-started', 'plan'].forEach(function (id) { var el = document.getElementById(id); if (el) io.observe(el); });
   }
 </script>
 <script src="/js/cookie-consent.js"></script>

@@ -365,7 +365,7 @@ mark { background: var(--green-soft); color: var(--green-dark); font-weight: 700
 }
 
 /* Homepage CTA hierarchy: primary service buttons, secondary text links */
-#get-started { scroll-margin-top: 96px; }
+#get-started { scroll-margin-top: 92px; }
 .hero-actions { max-width: 440px; }
 .feature-cards a { color: var(--green-dark); font-weight: 600; text-underline-offset: 3px; }
 .plan .micro { text-align: center; }
@@ -381,3 +381,4 @@ mark { background: var(--green-soft); color: var(--green-dark); font-weight: 700
   .plan-head { flex-wrap: wrap; }
 }
 .media-tag { white-space: nowrap; }
+.offer-copy .final-alt { margin-top: 26px; }

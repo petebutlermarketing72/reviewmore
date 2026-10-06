@@ -3,7 +3,7 @@
  * ============ EDIT PRICES, QUANTITIES AND SETTINGS HERE ============
  *
  * - options: each quantity you sell and its total price in pounds.
- * - free: true marks a free card. It shows FREE and sends people to the free card form on the homepage.
+ * - free: true marks a free card. It shows FREE and goes through the same order form (value 0).
  * - popular: true puts a "Most popular" tag on that option.
  * - defaultQty: which quantity is selected when the page loads.
  * - cardType: the exact text sent to the "Card Type" field in GoHighLevel.
@@ -116,8 +116,7 @@ var REVIEW_CARDS = {
     }
 
     orderBtn.addEventListener('click', function () {
-      if (selection[id].free) { window.location.href = '/#free-card'; return; }
-      openOrder(id);
+            openOrder(id);
     });
   });
 
