@@ -3,6 +3,7 @@
  * ============ EDIT PRICES, QUANTITIES AND SETTINGS HERE ============
  *
  * - options: each quantity you sell and its total price in pounds.
+ * - free: true marks a free card. It shows FREE and sends people to the free card form on the homepage.
  * - popular: true puts a "Most popular" tag on that option.
  * - defaultQty: which quantity is selected when the page loads.
  * - cardType: the exact text sent to the "Card Type" field in GoHighLevel.
@@ -17,7 +18,7 @@ var REVIEW_CARDS = {
       cardType: 'Standard',
       defaultQty: 10,
       options: [
-        { qty: 1,  price: 9 },
+        { qty: 1,  price: 0, free: true },
         { qty: 5,  price: 39 },
         { qty: 10, price: 59, popular: true }
       ]
@@ -50,6 +51,7 @@ var REVIEW_CARDS = {
   var current = null;   // product id open in the order form
 
   function money(n) {
+    if (n === 0) return 'FREE';
     return '£' + (Number.isInteger(n) ? n : n.toFixed(2));
   }
   function cardsLabel(n) {
@@ -72,11 +74,15 @@ var REVIEW_CARDS = {
     var wrap = el.querySelector('[data-qty-options]');
     var priceNow = el.querySelector('[data-price-now]');
     var priceMeta = el.querySelector('[data-price-meta]');
+    var orderBtn = el.querySelector('[data-order-button]');
+    var orderLabel = orderBtn.textContent;
 
     function show(opt) {
       selection[id] = opt;
       priceNow.textContent = money(opt.price);
-      priceMeta.textContent = opt.qty === 1 ? '1 card' : cardsLabel(opt.qty) + ' · ' + perCard(opt);
+      priceMeta.textContent = opt.free ? '1 card · one per business · posted free'
+        : opt.qty === 1 ? '1 card' : cardsLabel(opt.qty) + ' · ' + perCard(opt);
+      orderBtn.textContent = opt.free ? 'Get my free card' : orderLabel;
     }
 
     product.options.forEach(function (opt) {
@@ -109,7 +115,8 @@ var REVIEW_CARDS = {
       show(product.options[0]);
     }
 
-    el.querySelector('[data-order-button]').addEventListener('click', function () {
+    orderBtn.addEventListener('click', function () {
+      if (selection[id].free) { window.location.href = '/#free-card'; return; }
       openOrder(id);
     });
   });
