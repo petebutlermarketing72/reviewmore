@@ -29,7 +29,6 @@ var REVIEW_CARDS = {
       defaultQty: 5,
       askForLogo: true,
       options: [
-        { qty: 1,  price: 19 },
         { qty: 5,  price: 79, popular: true },
         { qty: 10, price: 139 }
       ]

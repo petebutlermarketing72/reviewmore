@@ -382,3 +382,20 @@ mark { background: var(--green-soft); color: var(--green-dark); font-weight: 700
 }
 .media-tag { white-space: nowrap; }
 .offer-copy .final-alt { margin-top: 26px; }
+
+/* Cards-only homepage: wider headline column so the title sits on three lines on laptops */
+@media (min-width: 901px) {
+  .hero-panel { padding: clamp(28px, 4vw, 56px) 0; }
+  .hero-grid { max-width: 1400px; grid-template-columns: 2fr 1fr; gap: clamp(28px, 4vw, 56px); }
+  .hero h1 { font-size: clamp(40px, 4.2vw, 58px); }
+  .hero-copy > p:not(.eyebrow):not(.micro) { max-width: 40em; margin-top: 18px; }
+  .hero-actions { margin-top: 24px; }
+}
+
+/* Keep these two headings on one line on desktop */
+@media (min-width: 901px) {
+  #how .section-head { max-width: none; }
+  #how .section-head h2, #genuine .narrow-inner h2 { white-space: nowrap; }
+  #genuine .narrow-inner { max-width: none; }
+  #genuine .narrow-inner .sub { max-width: 760px; margin-left: auto; margin-right: auto; }
+}
