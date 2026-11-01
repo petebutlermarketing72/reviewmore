@@ -374,7 +374,28 @@
     </div>
     <p class="order-note">No payment is taken now. Pete will be in touch to confirm the details before your cards are produced.</p>
     <p class="order-note order-note-logo" data-logo-note hidden>No need to send your logo now. We'll ask for your logo and colours when we confirm your order.</p>
-    <div class="order-form" data-order-form></div>
+    <form class="order-form" name="card-order" method="POST" action="/order-thanks/" data-netlify="true" netlify-honeypot="bot-field" data-order-form>
+      <input type="hidden" name="form-name" value="card-order">
+      <p class="hp" aria-hidden="true"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+      <input type="hidden" name="card_type" data-field="card_type">
+      <input type="hidden" name="card_quantity" data-field="card_quantity">
+      <input type="hidden" name="order_value" data-field="order_value">
+
+      <label class="field"><span>First name *</span>
+        <input type="text" name="first_name" placeholder="First name" autocomplete="given-name" required></label>
+      <label class="field"><span>Business name *</span>
+        <input type="text" name="business_name" placeholder="Enter your business" autocomplete="organization" required></label>
+      <label class="field"><span>Your mobile *</span>
+        <input type="tel" name="mobile" placeholder="07123 456789" autocomplete="tel" required></label>
+      <label class="field"><span>Email *</span>
+        <input type="email" name="email" placeholder="your@email.com" autocomplete="email" required></label>
+      <label class="check">
+        <input type="checkbox" name="sms_consent" value="yes">
+        <span>I agree to receive non-marketing text messages from ReviewMore about my card order. Message frequency varies. Message and data rates may apply. Reply HELP for assistance or STOP to opt out.</span>
+      </label>
+      <button type="submit" class="btn btn-big btn-block">Place order</button>
+      <p class="order-privacy">We only use your details to process your order. See our <a href="/privacy/">Privacy &amp; cookies</a> policy.</p>
+    </form>
   </div>
 </dialog>
 

@@ -6,12 +6,10 @@
  * - free: true marks a free card. It shows FREE and goes through the same order form (value 0).
  * - popular: true puts a "Most popular" tag on that option.
  * - defaultQty: which quantity is selected when the page loads.
- * - cardType: the exact text sent to the "Card Type" field in GoHighLevel.
- * - ORDER_FORM_ID: the GoHighLevel "ReviewMore – Card Order" form.
+ * - cardType: the exact text sent as the "card_type" value with each order.
+ * - The order form is the Netlify form in index.html (name "card-order").
  */
 var REVIEW_CARDS = {
-  ORDER_FORM_ID: 'QdOFEYaape3khISeWewd',
-
   products: {
     standard: {
       name: 'Standard Review Cards',
@@ -33,13 +31,6 @@ var REVIEW_CARDS = {
         { qty: 10, price: 139 }
       ]
     }
-  },
-
-  // Query keys of the hidden fields in the GoHighLevel order form
-  fieldKeys: {
-    type: 'card_type',
-    qty: 'card_quantity',
-    value: 'order_value'
   }
 };
 /* =================================================================== */
@@ -121,57 +112,15 @@ var REVIEW_CARDS = {
 
   /* ---------- Order form ---------- */
   var dialog = document.getElementById('order-dialog');
-  var formArea = dialog.querySelector('[data-order-form]');
-  var orderFrame = null;
+  var form = dialog.querySelector('[data-order-form]');
 
-  // GoHighLevel fills its hidden fields from these query parameters,
-  // e.g. ?card_type=Custom%20Branded&card_quantity=10&order_value=79
-  function orderUrl(id) {
-    var keys = cfg.fieldKeys;
+  // Put the chosen card type, quantity and price into the form's hidden fields
+  function fillHidden(id) {
     var opt = selection[id];
-    var query = [
-      [keys.type, cfg.products[id].cardType],
-      [keys.qty, String(opt.qty)],
-      [keys.value, String(opt.price)]
-    ].map(function (pair) {
-      return encodeURIComponent(pair[0]) + '=' + encodeURIComponent(pair[1]);
-    }).join('&');
-    return 'https://api.leadconnectorhq.com/widget/form/' + cfg.ORDER_FORM_ID + '?' + query;
-  }
-
-  // The form is created once, using GoHighLevel's embed settings, then
-  // GoHighLevel's script (which only sets up forms present when it loads)
-  // takes over. Later orders just load the same form with new details.
-  function showForm(id) {
-    if (orderFrame) {
-      orderFrame.src = orderUrl(id);
-      return;
-    }
-    var formId = cfg.ORDER_FORM_ID;
-    var iframe = document.createElement('iframe');
-    iframe.src = orderUrl(id);
-    iframe.id = 'inline-' + formId;
-    iframe.title = 'ReviewMore – Card Order';
-    iframe.style.cssText = 'width:100%;height:906px;border:none;border-radius:8px';
-    iframe.setAttribute('data-layout', "{'id':'INLINE'}");
-    iframe.setAttribute('data-trigger-type', 'alwaysShow');
-    iframe.setAttribute('data-trigger-value', '');
-    iframe.setAttribute('data-activation-type', 'alwaysActivated');
-    iframe.setAttribute('data-activation-value', '');
-    iframe.setAttribute('data-deactivation-type', 'neverDeactivate');
-    iframe.setAttribute('data-deactivation-value', '');
-    iframe.setAttribute('data-form-name', 'ReviewMore – Card Order');
-    iframe.setAttribute('data-height', '906');
-    iframe.setAttribute('data-layout-iframe-id', 'inline-' + formId);
-    iframe.setAttribute('data-form-id', formId);
-    iframe.setAttribute('data-cookie-consent', 'true');
-    iframe.setAttribute('data-cookie-consent-provider', 'auto');
-    formArea.appendChild(iframe);
-    orderFrame = iframe;
-
-    var s = document.createElement('script');
-    s.src = 'https://link.msgsndr.com/js/form_embed.js';
-    document.body.appendChild(s);
+    var values = { card_type: cfg.products[id].cardType, card_quantity: String(opt.qty), order_value: String(opt.price) };
+    Object.keys(values).forEach(function (key) {
+      form.querySelector('[data-field="' + key + '"]').value = values[key];
+    });
   }
 
   function openOrder(id) {
@@ -181,7 +130,7 @@ var REVIEW_CARDS = {
     dialog.querySelector('[data-order-price]').textContent = money(selection[id].price);
     dialog.querySelector('[data-logo-note]').hidden = !product.askForLogo;
 
-    showForm(id);
+    fillHidden(id);
 
     if (typeof dialog.showModal === 'function') dialog.showModal();
     else dialog.setAttribute('open', '');
@@ -195,8 +144,6 @@ var REVIEW_CARDS = {
 
   dialog.addEventListener('close', function () {
     document.body.classList.remove('dialog-open');
-    // Clear the form so the next order never shows old details
-    if (orderFrame) orderFrame.src = 'about:blank';
     // Return focus to the button that opened the form
     var btn = current && document.querySelector('[data-product="' + current + '"] [data-order-button]');
     if (btn) btn.focus();

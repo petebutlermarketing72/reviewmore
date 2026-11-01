@@ -203,3 +203,18 @@ body.dialog-open { overflow: hidden; }
 /* Delivery line under each product description */
 .product-delivery { margin: 12px 0 24px; font-size: 16px; color: var(--ink-2); }
 .product-delivery strong { color: var(--green-dark); }
+
+/* Order form (Netlify) */
+.order-form { display: flex; flex-direction: column; gap: 18px; margin-top: 18px; }
+.order-form .field { display: flex; flex-direction: column; gap: 8px; }
+.order-form .field span { font-weight: 600; font-size: 17px; color: var(--ink); }
+.order-form input[type="text"], .order-form input[type="tel"], .order-form input[type="email"] {
+  width: 100%; font: inherit; font-size: 17px; color: var(--ink); background: var(--white);
+  border: 1px solid #cfd8d6; border-radius: 10px; padding: 16px 16px;
+}
+.order-form input:focus { outline: 2px solid var(--green); outline-offset: 1px; border-color: var(--green); }
+.order-form .check { display: flex; gap: 14px; align-items: flex-start; font-size: 15px; line-height: 1.4; color: var(--ink-2); }
+.order-form .check input { flex: none; width: 22px; height: 22px; margin-top: 2px; accent-color: var(--green); }
+.order-privacy { font-size: 14px; color: var(--muted); text-align: center; }
+.order-privacy a { color: inherit; text-decoration: underline; }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
