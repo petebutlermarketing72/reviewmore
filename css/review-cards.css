@@ -227,3 +227,18 @@ body.dialog-open { overflow: hidden; }
 /* Landing page spacing: more room above the examples, less before the order heading */
 #examples { padding-top: var(--section); padding-bottom: 0; }
 #order { padding-top: clamp(24px, 3vw, 40px); }
+
+/* Landing page: tighter hero, landscape order card */
+@media (min-width: 901px) {
+  .page-landing .hero-grid { max-width: 1240px; padding-left: clamp(24px, 5vw, 72px); padding-right: clamp(24px, 5vw, 72px); grid-template-columns: 1.9fr 1fr; }
+  .page-landing .hero h1 { font-size: clamp(40px, 3.9vw, 54px); }
+}
+.products-single { grid-template-columns: minmax(0, 1060px); justify-content: center; }
+.products-single .product { flex-direction: row; align-items: stretch; }
+.products-single .product-media { flex: 0 0 52%; aspect-ratio: auto; min-height: 100%; background: radial-gradient(circle at 30% 20%, #f3f8f7, #dfe9e7); }
+.products-single .product-media-photo img { object-fit: contain; object-position: center; }
+.products-single .product-body { flex: 1; justify-content: center; }
+@media (max-width: 800px) {
+  .products-single .product { flex-direction: column; }
+  .products-single .product-media { flex: none; aspect-ratio: 3 / 2; min-height: 0; }
+}
