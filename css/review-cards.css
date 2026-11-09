@@ -218,3 +218,8 @@ body.dialog-open { overflow: hidden; }
 .order-privacy { font-size: 14px; color: var(--muted); text-align: center; }
 .order-privacy a { color: inherit; text-decoration: underline; }
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+/* Example custom cards (landing page) */
+.card-examples { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.card-examples img { width: 100%; height: auto; display: block; border-radius: var(--radius-lg); box-shadow: var(--shadow); }
+@media (max-width: 800px) { .card-examples { grid-template-columns: 1fr; max-width: 520px; margin: 0 auto; } }
