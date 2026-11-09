@@ -223,3 +223,7 @@ body.dialog-open { overflow: hidden; }
 .card-examples { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .card-examples img { width: 100%; height: auto; display: block; border-radius: var(--radius-lg); box-shadow: var(--shadow); }
 @media (max-width: 800px) { .card-examples { grid-template-columns: 1fr; max-width: 520px; margin: 0 auto; } }
+
+/* Landing page spacing: more room above the examples, less before the order heading */
+#examples { padding-top: var(--section); padding-bottom: 0; }
+#order { padding-top: clamp(24px, 3vw, 40px); }
