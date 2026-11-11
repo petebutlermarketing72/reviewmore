@@ -242,3 +242,8 @@ body.dialog-open { overflow: hidden; }
   .products-single .product { flex-direction: column; }
   .products-single .product-media { flex: none; aspect-ratio: 3 / 2; min-height: 0; }
 }
+
+/* Landing page: key card features under the hero price line */
+.hero-features { display: flex; flex-wrap: wrap; gap: 8px 22px; font-weight: 600; font-size: 16px; color: var(--ink); }
+.hero-features span::before { content: "✓ "; color: var(--green); font-weight: 700; }
+.hero-copy > .hero-features { margin-top: 14px; }
