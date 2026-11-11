@@ -247,3 +247,9 @@ body.dialog-open { overflow: hidden; }
 .hero-features { display: flex; flex-wrap: wrap; gap: 8px 22px; font-weight: 600; font-size: 16px; color: var(--ink); }
 .hero-features span::before { content: "✓ "; color: var(--green); font-weight: 700; }
 .hero-copy > .hero-features { margin-top: 14px; }
+
+/* Landing page: front-and-back feature image above the example grid */
+.card-feature { max-width: 1000px; margin: 0 auto 20px; }
+.card-feature img { width: 100%; height: auto; display: block; border-radius: var(--radius-lg); box-shadow: var(--shadow); }
+.card-feature figcaption { margin-top: 12px; text-align: center; font-size: 15px; color: var(--muted); }
+.card-feature-only { margin-bottom: 0; }
